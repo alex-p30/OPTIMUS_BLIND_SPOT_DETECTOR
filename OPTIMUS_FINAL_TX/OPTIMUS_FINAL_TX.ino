@@ -23,17 +23,17 @@ SoftwareSerial mySerial(A3, A4); //RX, TX Define the serial data pins
 #define ECHOR A1
 #define MAX_DISTANCE 300 //Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
 
-#define BlinkL A4
+#define BlinkL A4 //Left and right turn signals. CANBUS connectivity is possible but was not completed. 
 #define BlinkR A5
 
 //Creates the sonar objects and defines the pins
 NewPing sonarL1(TRIG1, ECHO1, MAX_DISTANCE); //NewPing setup of pins and maximum distance.
-NewPing sonarM1(TRIG2, ECHO2, MAX_DISTANCE); //NewPing setup of pins and maximum distance
-NewPing sonarR1(TRIG3, ECHO3, MAX_DISTANCE); //NewPing setup of pins and maximum distance
-NewPing sonarR(TRIGR, ECHOR, 100);
-NewPing sonarL2(TRIG12, ECHO12, MAX_DISTANCE); //NewPing setup of pins and maximum distance.
-NewPing sonarM2(TRIG22, ECHO22, MAX_DISTANCE); //NewPing setup of pins and maximum distance
-NewPing sonarR2(TRIG32, ECHO32, MAX_DISTANCE); //NewPing setup of pins and maximum distance
+NewPing sonarM1(TRIG2, ECHO2, MAX_DISTANCE); 
+NewPing sonarR1(TRIG3, ECHO3, MAX_DISTANCE); 
+NewPing sonarR(TRIGR, ECHOR, 100); //Reverse sensor
+NewPing sonarL2(TRIG12, ECHO12, MAX_DISTANCE); 
+NewPing sonarM2(TRIG22, ECHO22, MAX_DISTANCE); 
+NewPing sonarR2(TRIG32, ECHO32, MAX_DISTANCE); 
 
 
 void setup(){
@@ -46,7 +46,7 @@ void setup(){
 
 void loop() {
   String data = ""; //Placeholder for the data to be transmitted
-  String BL = "";
+  String BL = ""; //Placeholder for the turn signal data
   String BR = "";
   delay(30);
   String cm1 = String(sonarL1.convert_cm(sonarL1.ping())); //pings each sensor in a specific 
@@ -59,7 +59,7 @@ void loop() {
   String cm5 = String(sonarL1.convert_cm(sonarR1.ping()));
   String cm6 = String(sonarL1.convert_cm(sonarR2.ping()));
   
-  if(analogRead(BlinkL)>10){BL = "1";} 
+  if(analogRead(BlinkL)>10){BL = "1";} //Workaround solution for lack of CANBUS connectivity. Turn signal lamp voltage is measured through a splice to detect activity. 
   else{BL = "0")
   if(analogRead(BlinkR)>10){BR = "1";}
   else(BR = "0";)
